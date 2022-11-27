@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: testpod
+spec:
+  containers:
+  - image: nginx
+    name: testpod
+  restartPolicy: Always
