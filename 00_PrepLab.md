@@ -55,13 +55,11 @@ Open the bashrc file with vim.
   
 ```bash
 
-spike [ ~ ]$ ls ~/.bashrc
-/home/spike/.bashrc
-spike [ ~ ]$ vim ~/.bash
-.bash_history  .bash_logout   .bash_profile  .bashrc        
-spike [ ~ ]$ vim ~/.bashrc
+yumemaru@Azure:~/LabAKS$ vim ~/.bashrc
 
 ```
+
+At the end of the file, add the alias:
 
 ```bash
 
