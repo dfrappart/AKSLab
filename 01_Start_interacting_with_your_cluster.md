@@ -8,12 +8,12 @@ Start by idenfying your cluster name with the appropriate az cli command:
 
 ```bash
 
-david@Azure:~$ az aks list | jq .[].name
+yumemaru@Azure:~$ az aks list | jq .[].name
 "aks-1"
 "aks-2"
 "aks-3"
 
-david@Azure:~$ az aks list | jq .[].resourceGroup
+yumemaru@Azure:~$ az aks list | jq .[].resourceGroup
 "rsg-akstraining1"
 "rsg-akstraining2"
 "rsg-akstraining3"
@@ -24,7 +24,7 @@ Once you know which cluster you should connect to, use the az aks get-credential
 
 ```bash
 
-david@Azure:~$ az aks get-credentials -n aks-1 -g rsg-aksIdentityState1
+yumemaru@Azure:~$ az aks get-credentials -n aks-1 -g rsg-aksIdentityState1
 Merged "aks-1" as current context in /home/david/.kube/config
 
 ```
@@ -35,7 +35,7 @@ You can check the configuration either by looking at the file directly or throug
 
 ```bash
 
-david@Azure:~$ k config view
+yumemaru@Azure:~$ k config view
 apiVersion: v1
 clusters:
 - cluster:
@@ -132,7 +132,7 @@ users:
 
 ```bash
 
-david@Azure:~$ cat ~/.kube/config 
+yumemaru@Azure:~$ cat ~/.kube/config 
 apiVersion: v1
 clusters:
 - cluster:
@@ -232,7 +232,7 @@ Check the current context with the folowing command:
 
 ```bash
 
-david@Azure:~$ k config current-context
+yumemaru@Azure:~$ k config current-context
 aks-3
 
 ```
@@ -241,7 +241,7 @@ If you have more than one cluster available, you can use the following command t
 
 ```bash
 
-david@Azure:~$ kubectl config get-contexts 
+yumemaru@Azure:~$ kubectl config get-contexts 
 CURRENT   NAME    CLUSTER   AUTHINFO                             NAMESPACE
           aks-1   aks-1     clusterUser_rsg-aksTraining1_aks-1   
           aks-2   aks-2     clusterUser_rsg-aksTraining2_aks-2   
@@ -255,7 +255,7 @@ Switch context by using the following command:
 
 ```bash
 
-david@Azure:~$ k config use-context aks-1
+yumemaru@Azure:~$ k config use-context aks-1
 Switched to context "aks-1".
 
 ```
@@ -264,7 +264,7 @@ Note that the context change is also visible if you use the kubectl config get-c
   
 ```bash
 
-david@Azure:~$ kubectl config get-contexts 
+yumemaru@Azure:~$ kubectl config get-contexts 
 CURRENT   NAME    CLUSTER   AUTHINFO                             NAMESPACE
 *         aks-1   aks-1     clusterUser_rsg-aksTraining1_aks-1   
           aks-2   aks-2     clusterUser_rsg-aksTraining2_aks-2   
@@ -284,7 +284,7 @@ Before anything, **ALWAYS** verify on which cluster your kubectl is pointing. Us
 
 ```bash
 
-david@Azure:~$ kubectl xxxxxx xxxxxxx-xxxxxxx
+yumemaru@Azure:~$ kubectl xxxxxx xxxxxxx-xxxxxxx
 aks-1
 
 ```
@@ -293,7 +293,7 @@ Let's start by checking the nodes available.
 
 ```bash
 
-david@Azure:~$ kubectl get nodes
+yumemaru@Azure:~$ kubectl get nodes
 W1123 11:11:12.064363    6512 azure.go:92] WARNING: the azure auth plugin is deprecated in v1.22+, unavailable in v1.26+; use https://github.com/Azure/kubelogin instead.
 To learn more, consult https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code DEC385XZP to authenticate.
@@ -326,7 +326,7 @@ To get more information on the nodes, use the follwing command :
 
 ```bash
 
-david@Azure:~$ k describe nodes aks-aksnp01-12766035-vmss000003
+yumemaru@Azure:~$ k describe nodes aks-aksnp01-12766035-vmss000003
 W1123 10:27:28.318501     137 azure.go:92] WARNING: the azure auth plugin is deprecated in v1.22+, unavailable in v1.26+; use https://github.com/Azure/kubelogin instead.
 To learn more, consult https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
 Name:               aks-aksnp01-12766035-vmss000003
@@ -468,14 +468,14 @@ To eliminate the message,we have to use [kubelogin](https://github.com/Azure/kub
 
 ```bash
 
-david@Azure:~$ kubelogin --version
+yumemaru@Azure:~$ kubelogin --version
 kubelogin version 
 git hash: v0.0.20/872ed59b23e06c3a0eb950cb67e7bd2b0e9d48d7
 Go version: go1.18.5
 Build time: 2022-08-09T18:30:45Z
 Platform: linux/amd64
 
-david@Azure:~$ kubelogin convert-kubeconfig
+yumemaru@Azure:~$ kubelogin convert-kubeconfig
 
 ```
 
@@ -484,13 +484,13 @@ Try the following command:
 
 ```bash
 
-david@Azure:~$ kubectl get nodes -o wide
+yumemaru@Azure:~$ kubectl get nodes -o wide
 
-david@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o yaml
+yumemaru@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o yaml
 
-david@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o json
+yumemaru@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o json
 
-david@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o json | jq .metadata.labels
+yumemaru@Azure:~$ kubectl get nodes aks-aksnp01-12766035-vmss000003 -o json | jq .metadata.labels
 
 ```
 

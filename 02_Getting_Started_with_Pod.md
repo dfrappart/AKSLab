@@ -29,9 +29,9 @@ In your Cloud Shell, create a folder to organize your lab files:
 
 ```bash
 
-david@Azure:~$ mkdir LabAKS
-david@Azure:~$ cd LabAKS/
-david@Azure:~/LabAKS$ 
+yumemaru@Azure:~$ mkdir LabAKS
+yumemaru@Azure:~$ cd LabAKS/
+yumemaru@Azure:~/LabAKS$ 
 
 ```
 
@@ -39,7 +39,7 @@ Create a file called testpod.yaml:
 
 ```bash
 
-david@Azure:~/LabAKS$ touch testpod.yaml
+yumemaru@Azure:~/LabAKS$ touch testpod.yaml
 
 ```
 
@@ -56,7 +56,7 @@ You can check that the file has been saved with the cat command.
 
 ```bash
 
-david@Azure:~/LabAKS$ cat testpod.yaml 
+yumemaru@Azure:~/LabAKS$ cat testpod.yaml 
 apiVersion: v1
 kind: Pod
 metadata:
@@ -69,7 +69,7 @@ spec:
     name: testpod
   dnsPolicy: ClusterFirst
   restartPolicy: Always
-david@Azure:~/LabAKS$ 
+yumemaru@Azure:~/LabAKS$ 
 
 ```
 
@@ -77,7 +77,7 @@ With the file created, you can now create the pod with this configuration using 
 
 ```bash
 
-david@Azure:~/LabAKS$ kubectl apply -f testpod.yaml --dry-run=client
+yumemaru@Azure:~/LabAKS$ kubectl apply -f testpod.yaml --dry-run=client
 
 ```
 
@@ -85,7 +85,7 @@ If the output is similar to the following, your config file is correctly written
 
 ```bash
 
-david@Azure:~/LabAKS$ kubectl apply -f testpod.yaml --dry-run=client
+yumemaru@Azure:~/LabAKS$ kubectl apply -f testpod.yaml --dry-run=client
 pod/testpod created (dry run)
 
 ```
@@ -94,12 +94,12 @@ Remove the `--dry-run` argument and verify that the pod is running with the `kub
 
 ```bash
 
-david@Azure:~/LabAKS$ kubectl apply -f testpod.yaml
+yumemaru@Azure:~/LabAKS$ kubectl apply -f testpod.yaml
 pod/testpod created
-david@Azure:~/LabAKS$ kubectl get pods
+yumemaru@Azure:~/LabAKS$ kubectl get pods
 NAME      READY   STATUS    RESTARTS   AGE
 testpod   1/1     Running   0          5s
-david@Azure:~/LabAKS$ 
+yumemaru@Azure:~/LabAKS$ 
 
 ```
 
@@ -124,10 +124,10 @@ Verify the existence of your namespace with the `kubectl get` command:
 
 ```bash
 
-david@Azure:~/LabAKS$ k get namespaces testnamespace -o wide
+yumemaru@Azure:~/LabAKS$ k get namespaces testnamespace -o wide
 NAME            STATUS   AGE
 testnamespace   Active   2m1s
-david@Azure:~/LabAKS$ 
+yumemaru@Azure:~/LabAKS$ 
 
 ```
 
@@ -159,10 +159,10 @@ Verfy that the pod exist afterward:
 
 ```bash
 
-david@Azure:~/LabAKS$ kubectl get pod -n testnamespace 
+yumemaru@Azure:~/LabAKS$ kubectl get pod -n testnamespace 
 NAME       READY   STATUS    RESTARTS   AGE
 testpod2   1/1     Running   0          10s
-david@Azure:~/LabAKS$ 
+yumemaru@Azure:~/LabAKS$ 
 
 ```
 
@@ -188,9 +188,9 @@ spec:
 
 ```bash
 
-david@Azure:~$ k apply -f podinnswithoutnscreation.yaml 
+yumemaru@Azure:~$ k apply -f podinnswithoutnscreation.yaml 
 Error from server (NotFound): error when creating "podinnswithoutnscreation.yaml": namespaces "testnamespace2" not found
-david@Azure:~$ 
+yumemaru@Azure:~$ 
 
 ```
 
