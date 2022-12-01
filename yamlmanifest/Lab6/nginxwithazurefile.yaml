@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginxwithazurefile
+  name: nginxwithazurefile
+spec:
+  volumes:
+  - name: azurefile-pvc
+    persistentVolumeClaim:
+      claimName: azurefile
+  containers:
+  - volumeMounts:
+    - name: azurefile-pvc
+      mountPath: /usr/share/nginx/html/
+    image: nginx
+    name: nginxwithazurefile
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
