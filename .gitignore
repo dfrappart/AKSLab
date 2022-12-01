@@ -1,2 +1,4 @@
 backend.hcl
 terraform.tfvars
+.terraform
+.terraform.lock.hcl
