@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: testdeployment
+  name: testdeployment
+  namespace: deploymentns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: testdeployment
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: testdeployment
+    spec:
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: index-html-configmap
+      - name: nginxlogs
+        persistentVolumeClaim:
+          claimName: azurefile3      
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - name: nginx-index-file
+          mountPath: /usr/share/nginx/html/
+        - name: nginxlogs
+          mountPath: /var/log/nginx/          
+        resources: {}
+status: {}

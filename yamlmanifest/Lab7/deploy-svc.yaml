@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: testdeployment
+  name: nginxdeploy-svc
+  namespace: deploymentns
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8088
+    protocol: TCP
+    targetPort: 80  
+  selector:
+    app: testdeployment
+status:
+  loadBalancer: {}
