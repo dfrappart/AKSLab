@@ -24,26 +24,7 @@ data:
 Create the configmap from this manifest.
 Do not forget to create the namespace before!
 
-```yaml
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
- name: index-html-configmap
- namespace: demo
-data:
- index.html: |
-   <html>
-   <h1>Welcome to Cellenza Kubernetes training</h1>
-   </br>
-   <h2>Hi! This is a configmap Index file </h2>
-   <img src="https://i0.wp.com/training.cellenza.com/wp-content/uploads/2021/08/logo-Cellenza-Training-VF2.jpg" />
-   </html
-
-```
-
-Create the config map.
-Once create, create a pod with the nginx container that use this configmap as its index.html file:
+Once created, create a pod with the nginx container that use this configmap as its index.html file:
 
 ```yaml
 
