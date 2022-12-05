@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginxwitouttoleration
+  name: nginxwitouttoleration
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginxwitouttoleration
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  tolerations:
+  - key: "agentpool"
+    operator: "Equal"
+    value: "nodepool2"
+    effect: "NoSchedule"
+status: {}
+
