@@ -239,7 +239,13 @@ spec:
             name: docpage-svc
             port: 
               number: 80
-
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: mainpage-svc
+            port:
+              number: 80
 ```
 
 We can check the ingress status:
