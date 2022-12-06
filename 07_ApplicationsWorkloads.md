@@ -2,6 +2,9 @@
 
 ## 1. Deployment
 
+Deployments are the most common controllers for application.
+Start by listing all the deployments in all the namespace:
+
 ```bash
 
 yumemaru@Azure:~$ k get deployments.apps -A
@@ -23,6 +26,8 @@ kube-system         microsoft-defender-collector-misc   1/1     1            1  
 tigera-operator     tigera-operator                     1/1     1            1           8d
 
 ```
+
+Now let' focus on a specific deployment:
 
 ```bash
 
@@ -91,6 +96,7 @@ NewReplicaSet:   ingress-nginx-controller-7d5fb757db (1/1 replicas created)
 Events:          <none>
 
 ```
+Now let's create our own deployment:
 
 Create a new namespace
 
