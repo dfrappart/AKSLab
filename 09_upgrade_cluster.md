@@ -18,7 +18,7 @@ During the upgrade, new nodes are created. To control this, the cluster has a sp
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks list | jq .[1].agentPoolProfiles[0].upgradeSettings
+yumemaru@Azure:~/LabAKS$ az aks list | jq .[].agentPoolProfiles[0].upgradeSettings
 {
   "maxSurge": null
 }
@@ -29,7 +29,7 @@ If it's set up to null, it is not configured. Let's specify that we want a 33% s
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks nodepool update -n default -g rsg-aksTraining1 --cluster-name akscli-1 --max-surge 33%
+yumemaru@Azure:~/LabAKS$ az aks nodepool update -n `node_pool_name` -g rsg-aksTraining1 --cluster-name akscli-1 --max-surge 33%
 
 
 ```
