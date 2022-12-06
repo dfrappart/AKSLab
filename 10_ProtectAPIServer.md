@@ -95,6 +95,7 @@ Unable to connect to the server: dial tcp 52.226.5.114:443: i/o timeout
 It seems to be working, let's try to allow ourself access by getting our own Public IP and adding it to the API accept list: 
 If everything works correctly, we should be able to interact with the cluster:
 
+
 ```bash
 
 yumemaru@Azure:~/LabAKS$ k get nodes
@@ -102,6 +103,16 @@ NAME                                STATUS   ROLES   AGE   VERSION
 aks-nodepool1-23978515-vmss000003   Ready    agent   24h   v1.24.3
 aks-nodepool1-23978515-vmss000004   Ready    agent   24h   v1.24.3
 aks-nodepool1-23978515-vmss000005   Ready    agent   24h   v1.24.3
+
+```
+
+Note: to get your ip from cloud shell, you can use the following commands: 
+
+```bash
+
+yumemaru@Azure:~/LabAKS$ dig @resolver1.opendns.com myip.opendns.com +short
+
+yumemaru@Azure:~/LabAKS$ curl ifconfig.me/ip
 
 ```
 
