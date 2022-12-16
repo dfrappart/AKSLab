@@ -2,7 +2,7 @@
 
 ## 1. Explore the node pools 
 
-Node pools are the Compute poart of the AKS cluster.
+Node pools are the Compute part of the AKS cluster.
 Also they are the more IaaS part of AKS since, as opposite to the Control plane, they do live in a Virtual Network as virtual Machine Scale Set.
 Find the node pools of your cluster with the following command:
 
@@ -393,7 +393,7 @@ nginxwitouttoleration   0/1     Pending   0          3s
 
 ```
 
-that's becasue the taints block scheduling:
+that's because the taints block scheduling:
 
 ```bash
 
@@ -501,12 +501,12 @@ Let's start by creating a new virtual network:
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az network vnet create --name vnet-akscli-3 -g rsg-akstraining1 --address-prefixes 10.225.0.0/24
+yumemaru@Azure:~/LabAKS$ az network vnet create --name vnet-akscli-3 -g rsg-akstraining1 --address-prefixes 10.225.0.0/16
 {
   "newVNet": {
     "addressSpace": {
       "addressPrefixes": [
-        "10.225.0.0/24"
+        "10.225.0.0/16"
       ]
     },
     "bgpCommunities": null,
@@ -517,7 +517,7 @@ yumemaru@Azure:~/LabAKS$ az network vnet create --name vnet-akscli-3 -g rsg-akst
     "enableDdosProtection": false,
     "enableVmProtection": null,
     "encryption": null,
-    "etag": "W/\"6bdd2eb9-3e6b-4f98-ace8-d20219fda776\"",
+    "etag": "W/\"bb83d90d-b017-4f93-9154-cde2d80a8a2a\"",
     "extendedLocation": null,
     "flowTimeoutInMinutes": null,
     "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rsg-akstraining1/providers/Microsoft.Network/virtualNetworks/vnet-akscli-3",
@@ -526,7 +526,7 @@ yumemaru@Azure:~/LabAKS$ az network vnet create --name vnet-akscli-3 -g rsg-akst
     "name": "vnet-akscli-3",
     "provisioningState": "Succeeded",
     "resourceGroup": "rsg-akstraining1",
-    "resourceGuid": "ea0f625b-4b73-4cf6-a08c-6c400447ffea",
+    "resourceGuid": "00000000-0000-0000-0000-000000000000",
     "subnets": [],
     "tags": {},
     "type": "Microsoft.Network/virtualNetworks",
@@ -540,9 +540,11 @@ And 2 subnets:
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name akssubnet --vnet-name $vnetname --resource-group $rgname --address-prefixes 10.225.0.0/26
+yumemaru@Azure:~/LabAKS$ export vnetname='vnet-akscli-3'
+yumemaru@Azure:~/LabAKS$ export rgname='rsg-akstraining1'
+yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name akssubnet --vnet-name $vnetname --resource-group $rgname --address-prefixes 10.225.0.0/17
 {
-  "addressPrefix": "10.225.0.0/26",
+  "addressPrefix": "10.225.0.0/17",
   "addressPrefixes": null,
   "applicationGatewayIpConfigurations": null,
   "delegations": [],
@@ -568,9 +570,9 @@ yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name akssubnet --vnet-n
   "type": "Microsoft.Network/virtualNetworks/subnets"
 }
 
-yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name winsubnet --vnet-name $vnetname --resource-group $rgname --address-prefixes 10.225.0.64/26
+yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name winsubnet --vnet-name $vnetname --resource-group $rgname --address-prefixes 10.225.128.0/24
 {
-  "addressPrefix": "10.225.0.64/26",
+  "addressPrefix": "10.225.128.0/24",
   "addressPrefixes": null,
   "applicationGatewayIpConfigurations": null,
   "delegations": [],
@@ -597,67 +599,6 @@ yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name winsubnet --vnet-n
 }
 
 ```
-Identify the appropriate network and export the name and resource group name:
-
-```bash
-yumemaru@Azure:~/LabAKS$ export vnetname='aks-vnet-16914537'
-
-yumemaru@Azure:~/LabAKS$ export rgname='MC_rsg-aksTraining1_akscli-1_eastus'
-
-```
-
-We also need information regarding the available range on the Virtual Network and the address space allocated to the subnets:
-
-```bash
-
-yumemaru@Azure:~/LabAKS$ az network vnet list | jq .[0].addressSpace
-{
-  "addressPrefixes": [
-    "10.224.0.0/12"
-  ]
-}
-
-yumemaru@Azure:~/LabAKS$ az network vnet list | jq .[0].subnets[].addressPrefix
-"10.224.0.0/16"
-
-```
-
-In this case, we have 1 subnet with a range of `10.224.0.0/16` taken from the address space of the Virtual Network `10.224.0.0/12`
-
-We will create first a new subnet with a range taken in the Virtual Network address space:
-
-```bash
-
-yumemaru@Azure:~/LabAKS$ az network vnet subnet create --name windowsnodepoolsubnet --vnet-name $vnetname --resource-group $rgname --address-prefixes 10.225.0.0/26
-{
-  "addressPrefix": "10.225.0.0/26",
-  "addressPrefixes": null,
-  "applicationGatewayIpConfigurations": null,
-  "delegations": [],
-  "etag": "W/\"71f9dbe7-7b62-4dcf-9780-5cc83f49a7a2\"",
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_rsg-aksTraining1_akscli-1_eastus/providers/Microsoft.Network/virtualNetworks/aks-vnet-16914537/subnets/windowsnodepoolsubnet",
-  "ipAllocations": null,
-  "ipConfigurationProfiles": null,
-  "ipConfigurations": null,
-  "name": "windowsnodepoolsubnet",
-  "natGateway": null,
-  "networkSecurityGroup": null,
-  "privateEndpointNetworkPolicies": "Disabled",
-  "privateEndpoints": null,
-  "privateLinkServiceNetworkPolicies": "Enabled",
-  "provisioningState": "Succeeded",
-  "purpose": null,
-  "resourceGroup": "MC_rsg-aksTraining1_akscli-1_eastus",
-  "resourceNavigationLinks": null,
-  "routeTable": null,
-  "serviceAssociationLinks": null,
-  "serviceEndpointPolicies": null,
-  "serviceEndpoints": null,
-  "type": "Microsoft.Network/virtualNetworks/subnets"
-}
-
-```
-
 
 We will need the subnets ids:
 
@@ -675,7 +616,7 @@ Now we can create a new cluster:
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks create --resource-group rsg-aksTraining1 --name akscli-3 --enable-aad --enable-oidc-issuer --load-balancer-sku standard --location eastus --network-plugin kubenet --network-policy calico --vnet-subnet-id $akssubnet --zones 1 2 3 --aad-admin-group-object-ids 00000000-0000-0000-0000-000000000000
+yumemaru@Azure:~/LabAKS$ az aks create --resource-group rsg-aksTraining1 --name akscli-3 --enable-aad --enable-oidc-issuer --load-balancer-sku standard --location eastus --network-plugin azure --network-policy calico --vnet-subnet-id $akssubnet --zones 1 2 3 --aad-admin-group-object-ids 00000000-0000-0000-0000-000000000000
 
 {
   "aadProfile": {
@@ -875,57 +816,201 @@ And a windows nodepool in the dedicated subnet
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks nodepool add --name winnodepool --cluster-name akscli-3 -g $rgname --node-count 3 --vnet-subnet-id $winsubnet
+yumemaru@Azure:~/LabAKS$ az aks nodepool add --name winnodepool --cluster-name akscli-3 -g $rgname --node-count 3 --vnet-subnet-id $winsubnet --osType Windows
 {
-  "availabilityZones": null,
-  "count": 3,
-  "creationData": null,
-  "currentOrchestratorVersion": "1.23.12",
-  "enableAutoScaling": false,
-  "enableEncryptionAtHost": false,
-  "enableFips": false,
-  "enableNodePublicIp": false,
-  "enableUltraSsd": false,
-  "gpuInstanceProfile": null,
-  "hostGroupId": null,
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rsg-akstraining1/providers/Microsoft.ContainerService/managedClusters/akscli-3/agentPools/winnodepool",
-  "kubeletConfig": null,
-  "kubeletDiskType": "OS",
-  "linuxOsConfig": null,
-  "maxCount": null,
-  "maxPods": 110,
-  "minCount": null,
-  "mode": "User",
-  "name": "winnodepool",
-  "nodeImageVersion": "AKSUbuntu-1804gen2containerd-2022.11.12",
-  "nodeLabels": null,
-  "nodePublicIpPrefixId": null,
-  "nodeTaints": null,
-  "orchestratorVersion": "1.23.12",
-  "osDiskSizeGb": 128,
-  "osDiskType": "Managed",
-  "osSku": "Ubuntu",
-  "osType": "Linux",
-  "podSubnetId": null,
+  "aadProfile": {
+    "adminGroupObjectIDs": [
+      "00000000-0000-0000-0000-000000000000"
+    ],
+    "adminUsers": null,
+    "clientAppId": null,
+    "enableAzureRbac": false,
+    "managed": true,
+    "serverAppId": null,
+    "serverAppSecret": null,
+    "tenantId": "00000000-0000-0000-0000-000000000000"
+  },
+  "addonProfiles": null,
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": [
+        "1",
+        "2",
+        "3"
+      ],
+      "count": 3,
+      "creationData": null,
+      "currentOrchestratorVersion": "1.23.12",
+      "enableAutoScaling": false,
+      "enableEncryptionAtHost": false,
+      "enableFips": false,
+      "enableNodePublicIp": false,
+      "enableUltraSsd": false,
+      "gpuInstanceProfile": null,
+      "hostGroupId": null,
+      "kubeletConfig": null,
+      "kubeletDiskType": "OS",
+      "linuxOsConfig": null,
+      "maxCount": null,
+      "maxPods": 30,
+      "minCount": null,
+      "mode": "System",
+      "name": "nodepool1",
+      "nodeImageVersion": "AKSUbuntu-1804gen2containerd-2022.12.01",
+      "nodeLabels": null,
+      "nodePublicIpPrefixId": null,
+      "nodeTaints": null,
+      "orchestratorVersion": "1.23.12",
+      "osDiskSizeGb": 128,
+      "osDiskType": "Managed",
+      "osSku": "Ubuntu",
+      "osType": "Linux",
+      "podSubnetId": null,
+      "powerState": {
+        "code": "Running"
+      },
+      "provisioningState": "Succeeded",
+      "proximityPlacementGroupId": null,
+      "scaleDownMode": null,
+      "scaleSetEvictionPolicy": null,
+      "scaleSetPriority": null,
+      "spotMaxPrice": null,
+      "tags": null,
+      "type": "VirtualMachineScaleSets",
+      "upgradeSettings": {
+        "maxSurge": null
+      },
+      "vmSize": "Standard_DS2_v2",
+      "vnetSubnetId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rsg-akstraining1/providers/Microsoft.Network/virtualNetworks/vnet-akscli-3/subnets/akssubnet",
+      "workloadRuntime": null
+    }
+  ],
+  "apiServerAccessProfile": null,
+  "autoScalerProfile": null,
+  "autoUpgradeProfile": null,
+  "azurePortalFqdn": "akscli-3-rsg-akstraining1-000000-da136a19.portal.hcp.eastus.azmk8s.io",
+  "currentKubernetesVersion": "1.23.12",
+  "disableLocalAccounts": false,
+  "diskEncryptionSetId": null,
+  "dnsPrefix": "akscli-3-rsg-aksTraining1-000000",
+  "enablePodSecurityPolicy": null,
+  "enableRbac": true,
+  "extendedLocation": null,
+  "fqdn": "akscli-3-rsg-akstraining1-000000-da136a19.hcp.eastus.azmk8s.io",
+  "fqdnSubdomain": null,
+  "httpProxyConfig": null,
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rsg-aksTraining1/providers/Microsoft.ContainerService/managedClusters/akscli-3",
+  "identity": {
+    "principalId": "00000000-0000-0000-0000-000000000000",
+    "tenantId": "00000000-0000-0000-0000-000000000000",
+    "type": "SystemAssigned",
+    "userAssignedIdentities": null
+  },
+  "identityProfile": {
+    "kubeletidentity": {
+      "clientId": "00000000-0000-0000-0000-000000000000",
+      "objectId": "00000000-0000-0000-0000-000000000000",
+      "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_rsg-aksTraining1_akscli-3_eastus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/akscli-3-agentpool"
+    }
+  },
+  "kubernetesVersion": "1.23.12",
+  "linuxProfile": {
+    "adminUsername": "azureuser",
+    "ssh": {
+      "publicKeys": [
+        {
+          "keyData": ""
+        }
+      ]
+    }
+  },
+  "location": "eastus",
+  "maxAgentPools": 100,
+  "name": "akscli-3",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "ipFamilies": [
+      "IPv4"
+    ],
+    "loadBalancerProfile": {
+      "allocatedOutboundPorts": null,
+      "effectiveOutboundIPs": [
+        {
+          "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_rsg-aksTraining1_akscli-3_eastus/providers/Microsoft.Network/publicIPAddresses/7cea1385-0246-44b6-8e25-d0d062d87ab2",
+          "resourceGroup": "MC_rsg-aksTraining1_akscli-3_eastus"
+        }
+      ],
+      "enableMultipleStandardLoadBalancers": null,
+      "idleTimeoutInMinutes": null,
+      "managedOutboundIPs": {
+        "count": 1,
+        "countIpv6": null
+      },
+      "outboundIPs": null,
+      "outboundIpPrefixes": null
+    },
+    "loadBalancerSku": "Standard",
+    "natGatewayProfile": null,
+    "networkMode": null,
+    "networkPlugin": "azure",
+    "networkPolicy": "calico",
+    "outboundType": "loadBalancer",
+    "podCidr": null,
+    "podCidrs": null,
+    "serviceCidr": "10.0.0.0/16",
+    "serviceCidrs": [
+      "10.0.0.0/16"
+    ]
+  },
+  "nodeResourceGroup": "MC_rsg-aksTraining1_akscli-3_eastus",
+  "oidcIssuerProfile": {
+    "enabled": true,
+    "issuerUrl": "https://eastus.oic.prod-aks.azure.com/00000000-0000-0000-0000-000000000000/30969524-bca8-4163-a255-8aa3999df94f/"
+  },
+  "podIdentityProfile": null,
   "powerState": {
     "code": "Running"
   },
+  "privateFqdn": null,
+  "privateLinkResources": null,
   "provisioningState": "Succeeded",
-  "proximityPlacementGroupId": null,
-  "resourceGroup": "rsg-akstraining1",
-  "scaleDownMode": "Delete",
-  "scaleSetEvictionPolicy": null,
-  "scaleSetPriority": null,
-  "spotMaxPrice": null,
-  "tags": null,
-  "type": "Microsoft.ContainerService/managedClusters/agentPools",
-  "typePropertiesType": "VirtualMachineScaleSets",
-  "upgradeSettings": {
-    "maxSurge": null
+  "publicNetworkAccess": null,
+  "resourceGroup": "rsg-aksTraining1",
+  "securityProfile": {
+    "azureKeyVaultKms": null,
+    "defender": null
   },
-  "vmSize": "Standard_DS2_v2",
-  "vnetSubnetId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rsg-akstraining1/providers/Microsoft.Network/virtualNetworks/vnet-akscli-3/subnets/winsubnet",
-  "workloadRuntime": null
+  "servicePrincipalProfile": {
+    "clientId": "msi",
+    "secret": null
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "storageProfile": {
+    "blobCsiDriver": null,
+    "diskCsiDriver": {
+      "enabled": true
+    },
+    "fileCsiDriver": {
+      "enabled": true
+    },
+    "snapshotController": {
+      "enabled": true
+    }
+  },
+  "systemData": null,
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": {
+    "adminPassword": null,
+    "adminUsername": "azureuser",
+    "enableCsiProxy": true,
+    "gmsaProfile": null,
+    "licenseType": null
+  }
 }
 
 ```
@@ -939,17 +1024,7 @@ To create a spot nodepool, we use the following command:
 
 ```bash
 
-az aks nodepool add \
-    --resource-group myResourceGroup \
-    --cluster-name myAKSCluster \
-    --name spotnodepool \
-    --priority Spot \
-    --eviction-policy Delete \
-    --spot-max-price -1 \
-    --enable-cluster-autoscaler \
-    --min-count 1 \
-    --max-count 3 \
-    --no-wait
+az aks nodepool add --resource-group myResourceGroup --cluster-name akscli-3 --name spotnodepool --priority Spot --eviction-policy Delete --spot-max-price -1 --enable-cluster-autoscaler --min-count 1 --max-count 3
 
 ```
 
@@ -968,7 +1043,7 @@ null
 
 ```
 
-Now that the taint is identified, let's create a yaml manifest for a pod, with the appropriate toleration, and a node affinity:
+Now that the taint is identified, let's create a yaml manifest for a pod, with the appropriate toleration, and a node affinity. Do not forget
 
 
 ```yaml

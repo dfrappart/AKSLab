@@ -366,6 +366,9 @@ Get the Identity deployed for the Key Vault CSI:
 
 ```bash
 
+yumemaru@Azure:~/LabAKS$ export csiidentityclientid=$(az aks show -n akscli-1 -g rsg-akstraining1 --query addonProfiles.azureKeyvaultSecretsProvider.identity.clientId -o tsv)
+yumemaru@Azure:~/LabAKS$ export csiidentityobjectid=$(az aks show -n akscli-1 -g rsg-akstraining1 --query addonProfiles.azureKeyvaultSecretsProvider.identity.objectId -o tsv) 
+yumemaru@Azure:~/LabAKS$ export csiidentityresourceId=$(az aks show -n akscli-1 -g rsg-akstraining1 --query addonProfiles.azureKeyvaultSecretsProvider.identity.resourceId -o tsv)
 
 ```
 
@@ -373,21 +376,89 @@ Add an access policy to this identity:
 
 ```bash
 
-
+az keyvault set-policy --name "akscli-03-kv" --object-id <object-id> --secret-permissions <secret-permissions>
+{
+  "id": "/subscriptions/16e85b36-5c9d-48cc-a45d-c672a4393c36/resourceGroups/rsg-aksTraining1/providers/Microsoft.KeyVault/vaults/akscli-03-kv",
+  "location": "EastUS",
+  "name": "akscli-03-kv",
+  "properties": {
+    "accessPolicies": [
+      {
+        "applicationId": null,
+        "objectId": "c2d0f544-aa1e-454a-8daf-a99985634aa9",
+        "permissions": {
+          "certificates": [
+            "all"
+          ],
+          "keys": [
+            "all"
+          ],
+          "secrets": [
+            "all"
+          ],
+          "storage": [
+            "all"
+          ]
+        },
+        "tenantId": "e0c45235-95fe-4bd6-96ca-2d529f0ebde4"
+      },
+      {
+        "applicationId": null,
+        "objectId": "12f3f3bf-23d0-45a6-b933-11f62f248540",
+        "permissions": {
+          "certificates": null,
+          "keys": null,
+          "secrets": [
+            "list",
+            "get"
+          ],
+          "storage": null
+        },
+        "tenantId": "e0c45235-95fe-4bd6-96ca-2d529f0ebde4"
+      }
+    ],
+    "createMode": null,
+    "enablePurgeProtection": null,
+    "enableRbacAuthorization": null,
+    "enableSoftDelete": true,
+    "enabledForDeployment": false,
+    "enabledForDiskEncryption": null,
+    "enabledForTemplateDeployment": null,
+    "hsmPoolResourceId": null,
+    "networkAcls": null,
+    "privateEndpointConnections": null,
+    "provisioningState": "Succeeded",
+    "publicNetworkAccess": "Enabled",
+    "sku": {
+      "family": "A",
+      "name": "standard"
+    },
+    "softDeleteRetentionInDays": 90,
+    "tenantId": "e0c45235-95fe-4bd6-96ca-2d529f0ebde4",
+    "vaultUri": "https://akscli-03-kv.vault.azure.net/"
+  },
+  "resourceGroup": "rsg-aksTraining1",
+  "systemData": {
+    "createdAt": "2022-12-06T14:51:55.624000+00:00",
+    "createdBy": "david@teknews.cloud",
+    "createdByType": "User",
+    "lastModifiedAt": "2022-12-06T15:41:19.327000+00:00",
+    "lastModifiedBy": "david@teknews.cloud",
+    "lastModifiedByType": "User"
+  },
+  "tags": {},
+  "type": "Microsoft.KeyVault/vaults"
+}
 
 ```
 
-Add also an access policy to yourself to be able to create a secret:
-
-```bash
-
-
-```
+**An access policy was added at the creation time. There is no need to add a specific policy for the current user.**
 
 Create a secret in the Key Vault:
 
 ```bash
 
+az keyvault secret set --vault-name "akscli-03-kv" --name "secretdemo" --value "thisisademopwd"
 
 ```
 
