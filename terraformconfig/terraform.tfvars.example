@@ -1,0 +1,18 @@
+######################################################################
+# config variables 
+######################################################################
+
+######################################################################
+#Provider variable
+
+AzureSubscriptionID                 = ""
+AzureClientID                       = ""
+AzureClientSecret                   = ""
+AzureTenantID                       = ""
+
+AzureADClientID                     = ""
+AzureADClientSecret                 = ""
+
+AKSAdminGroupName                   = ""
+
+
