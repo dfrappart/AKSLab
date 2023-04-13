@@ -268,8 +268,9 @@ yumemaru@Azure:~/LabAKS$ az storage account list | jq .[].resourceGroup
 "rsg-dfitcfr-dev-tfmodule-aksobjects1"
 "rsg-aksTraining1"
 
-export STORAGE_KEY2=$(az storage account keys list --resource-group rsg-dfitcfr-dev-tfmodule-aksobjects1 --account-name f4ed328cf15fd4d5fbaeed7 --query "[0].value" -o tsv)
-df@df2204lts:~/Documents/myrepo/AKSLab/yamlmanifest$ az storage share list --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 | jq .[].name
+yumemaru@Azure:~/LabAKS$ export STORAGE_KEY2=$(az storage account keys list --resource-group rsg-dfitcfr-dev-tfmodule-aksobjects1 --account-name f4ed328cf15fd4d5fbaeed7 --query "[0].value" -o tsv)
+
+yumemaru@Azure:~/LabAKS$ az storage share list --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 | jq .[].name
 "pvc-919eeb9d-2fce-46db-ac54-bbbe36a6102a"
 
 
