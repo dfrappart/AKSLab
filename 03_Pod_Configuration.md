@@ -285,7 +285,7 @@ p@ssw0rd!
 The password contained in the secret is available in the path specified as a file.
 
 
-### 3.2. Secrets as environment variables
+### 2.2. Secrets as environment variables
 
 Secrets can also be referenced as environment variables for containers.
 In this case, there is no update of the secret in the pod, as opposite to secret mounted as volume.
@@ -359,7 +359,7 @@ Once the pod is running, test the environment variable existance:
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ kubectl exec podwithsecretenvvar -- printenv | grep -i sqlpassword
+yumemaru@Azure:~/LabAKS$ kubectl exec podwithsecretenvvar -- printenv | grep -i sqlpwd
 sqlpassword=p@ssw0rd2!
 
 ```
