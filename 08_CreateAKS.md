@@ -7,7 +7,7 @@ After looking at the different parameters, use the following command to create a
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks create --resource-group rsg-aksTraining1 --name akscli-1 --enable-aad --enable-oidc-issuer --load-balancer-sku standard --location eastus --network-plugin kubenet --network-policy calico --zones 1 2 3
+yumemaru@Azure:~/LabAKS$ az aks create --resource-group <resource_group_name> --name <aks_cluster_name> --enable-aad --enable-oidc-issuer --load-balancer-sku standard --location eastus --network-plugin kubenet --network-policy calico --zones 1 2 3 --generate-ssh-keys
 {
   "aadProfile": {
     "adminGroupObjectIDs": null,
