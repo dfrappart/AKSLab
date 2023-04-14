@@ -7,7 +7,7 @@ Another option is the use of private endpoint.
 ## 1. accept list on the API Server
 
 In this session, we will look at the basic network protection on the API Server.
-Let's start by nagigating to the Azure portal, to have a look at the cluster network configuration:
+Let's start by navigating to the Azure portal, to have a look at the cluster network configuration:
 
 ![Illustration 1](./Img/protectapiserver001.png) 
   
