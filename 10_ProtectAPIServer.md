@@ -122,7 +122,7 @@ It may be that a simple Firewall rule against the API server is not considered s
 In this case the private cluster is a possible target.
 It relies on Private Link Private Endpoint technology which NAT a PaaS instance to a Network Interface Card in a virtual network.
 There are many consideration to take into account when designing a global strategy for PaaS service.
-In the following examplen, we will do it the easy way, and only create a cluster with a Private Endpoint, but without DNS to configure
+In the following example, we will do it the easy way, and only create a cluster with a Private Endpoint, but without DNS to configure
 
 ```bash
 

@@ -318,7 +318,7 @@ yumemaru@Azure:~/LabAKS$ kubectl run podwithsecretenvvar --image=nginx --dry-run
 
 ```
 
-Open the file and add the configuration for ann environment variable pointing to the secret.
+Open the file and add the configuration for an environment variable pointing to the secret.
 
 ```yaml
 

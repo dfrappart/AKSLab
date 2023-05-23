@@ -237,7 +237,7 @@ aks-3
 
 ```
 
-If you have more than one cluster available, you can use the following command to disply a short list:
+If you have more than one cluster available, you can use the following command to display a short list:
 
 ```bash
 

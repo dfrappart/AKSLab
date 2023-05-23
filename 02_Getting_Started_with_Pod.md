@@ -194,7 +194,7 @@ yumemaru@Azure:~$
 
 ```
 
-Modify the revious manifest as follow.
+Modify the previous manifest as follow.
 Note the `---` used to separate the namespace resource from the pod configuration.
 
 ```yaml

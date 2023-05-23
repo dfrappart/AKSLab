@@ -35,8 +35,8 @@ Get the storage access key. Kubernetes will need it to be able to acces the stor
 yumemaru@Azure:~/LabAKS$ export STORAGE_KEY=$(az storage account keys list --resource-group $STARG --account-name $STAName --query "[0].value" -o tsv)
 
 ```
-Alternatively, you can also nagivate to the Azure Portal to locate the storage acocunt, the access key.
-Verify the existence of an azure file share and xwhat it contains.
+Alternatively, you can also nagivate to the Azure Portal to locate the storage account, the access key.
+Verify the existence of an azure file share and what it contains.
 
 ```bash
 
@@ -276,7 +276,7 @@ yumemaru@Azure:~/LabAKS$ az storage share list --account-name f4ed328cf15fd4d5fb
 
 ```
 
-We have a new storage account wit an Azure file share created automatically.
+We have a new storage account with an Azure file share created automatically.
 Now let's retake the example from the multi-container pod and change a few thing
 
 ```yaml
@@ -326,10 +326,10 @@ Let's check the azure file share to see our file
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az storage file list --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 --share-name pvc-38b69205-1feb-4105-bc9d-fa3b7a6622cf| jq .[].name
+yumemaru@Azure:~/LabAKS$ az storage file list --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 --share-name pvc-38b69205-1feb-4105-bc9d-fa3b7a6622cf | jq .[].name
 "date.log"
 
-yumemaru@Azure:~/LabAKS$ az storage file download --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 --share-name pvc-38b69205-1feb-4105-bc9d-fa3b7a6622cf--path ./date.log
+yumemaru@Azure:~/LabAKS$ az storage file download --account-name f4ed328cf15fd4d5fbaeed7 --account-key $STORAGE_KEY2 --share-name pvc-38b69205-1feb-4105-bc9d-fa3b7a6622cf --path ./date.log
 
 yumemaru@Azure:~/LabAKS$ cat date.log 
 Thu Dec  1 15:11:16 UTC 2022

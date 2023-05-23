@@ -816,7 +816,7 @@ And a windows nodepool in the dedicated subnet
 
 ```bash
 
-yumemaru@Azure:~/LabAKS$ az aks nodepool add --name winnodepool --cluster-name akscli-3 -g $rgname --node-count 3 --vnet-subnet-id $winsubnet --osType Windows
+yumemaru@Azure:~/LabAKS$ az aks nodepool add --name winnp --cluster-name akscli-3 -g $rgname --node-count 3 --vnet-subnet-id $winsubnet --os-type Windows
 {
   "aadProfile": {
     "adminGroupObjectIDs": [
