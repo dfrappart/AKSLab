@@ -157,7 +157,7 @@ yumemaru@Azure:~/LabAKS$ az aks list | jq .[2].apiServerAccessProfile
 
 Note that in private cluster mode, there is no need for accept list, hence the message on the portal.
 
-Note also the configuration state with the `` set to true. 
+Note also the configuration state with the `enablePrivateClusterPublicFqdn` set to true. 
 We did the simple private cluster, with no DNS configuration at all. The fqdn is still public but the IP address associated to the API fqdn is private:
 
 ```bash
