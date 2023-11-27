@@ -18,11 +18,11 @@ provider "azurerm" {
   
 }
 
-provider "azuread" {
-  client_id                                = var.AzureADClientID
-  client_secret                            = var.AzureADClientSecret
-  tenant_id                                = var.AzureTenantID
-}
+#provider "azuread" {
+#  client_id                                = var.AzureADClientID
+#  client_secret                            = var.AzureADClientSecret
+#  tenant_id                                = var.AzureTenantID
+#}
 
 provider "azapi" {
   subscription_id                          = var.AzureSubscriptionID

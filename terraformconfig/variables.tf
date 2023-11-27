@@ -156,6 +156,12 @@ variable "TrainingList" {
   type = list
   description = "The trainee list"
   default = [
-    "david.frappart"
+    "david.frappart",
+    "olivier.kurtkowiak",
+    "antonino.calcagno",
+    "vincent.delaval",
+    "vincent.pirot",
+    "florian.marchant",
+    "wilfried.martret"
   ]
 }

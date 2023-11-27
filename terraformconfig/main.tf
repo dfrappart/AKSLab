@@ -278,7 +278,7 @@ module "AKS" {
   #count = 3
   for_each                              = toset(var.TrainingList)
   #Module Location
-  source                                = "github.com/dfrappart/Terra-AZModuletest//Custom_Modules/IaaS_AKS_Cluster?ref=c8342aca9832e14dfe598c779a374d453ea76204"
+  source                                = "github.com/dfrappart/Terra-AZModuletest//Custom_Modules/IaaS_AKS_Cluster?ref=aksv1.3.1" # c8342aca9832e14dfe598c779a374d453ea76204"
 
   #Module variable
 
@@ -292,9 +292,9 @@ module "AKS" {
   AKSIdentityType                       = "UserAssigned"
   UAIIds                                = [module.UAI_AKS[each.value].FullUAIOutput.id]
   PublicSSHKey                          = tls_private_key.akssshkey[each.value].public_key_openssh  
-  AKSClusterAdminsIds                   = [data.azuread_group.aksadmin.object_id]
+  AKSClusterAdminsIds                   = ["ff6d6ade-ffb6-4f3c-bbeb-64fab1a397c3"] #[data.azuread_group.aksadmin.object_id]
   TaintCriticalAddonsEnabled            = false
-  #LawLogId                              = azurerm_log_analytics_workspace.logaks.id
+  LawLogId                              = azurerm_log_analytics_workspace.logaks.id
   #EnableHostEncryption                  = true
   #LawDefenderId                         = data.azurerm_log_analytics_workspace.defenderlaw.id
   #IsAKSPrivate                          = true
@@ -302,7 +302,10 @@ module "AKS" {
   #PrivateDNSZoneId                      = var.AKSPrivateDNSZoneId
   #IsBYOPrivateDNSZone                   = true
   #IsBlobDriverEnabled                   = true
+  EnableDiagSettings = true
+  EnableHostEncryption     = false
 
 
 }
+
 

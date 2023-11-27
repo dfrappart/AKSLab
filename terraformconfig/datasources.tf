@@ -16,8 +16,8 @@ data "azurerm_client_config" "currentclientconfig" {}
 
 data "azuread_client_config" "current" {}
 
-data "azuread_group" "aksadmin" {
-  display_name              = var.AKSAdminGroupName
-  security_enabled          = true
-}
+#data "azuread_group" "aksadmin" {
+#  display_name              = var.AKSAdminGroupName
+#  security_enabled          = true
+#}
 
