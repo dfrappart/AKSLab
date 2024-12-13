@@ -9,7 +9,7 @@ output "AKS" {
   value = module.AKS
   sensitive = true
 }
-*/
+
 output "kmskey" {
   value = azurerm_key_vault_key.akskmskey
   sensitive = true
@@ -20,3 +20,4 @@ output "kmskv" {
   sensitive = true
 }
 
+*/

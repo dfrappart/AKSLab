@@ -155,13 +155,10 @@ variable "AKSPrivateDNSZoneId" {
 variable "TrainingList" {
   type = list
   description = "The trainee list"
-  default = [
-    "david.frappart",
-    "olivier.kurtkowiak",
-    "antonino.calcagno",
-    "vincent.delaval",
-    "vincent.pirot",
-    "florian.marchant",
-    "wilfried.martret"
-  ]
+  default = []
+}
+
+variable "AKSAdminGroupObjectId" {
+  type = string
+  
 }

@@ -78,7 +78,7 @@ resource "random_string" "randomstringstaflowlogs" {
 resource "azurerm_storage_account" "STAForFlowLogs" {
   for_each                              = toset(var.TrainingList)
   #substr(replace("${local.RgName}kvpsq${local.PSQLSuffix}", "-", ""), 0, 24)
-  name                                  = substr(replace(replace("staflowlog${resource.random_string.randomstringsta[each.value].result}${each.value}","-",""),".",""),0,24)
+  name                                  = substr(replace(replace("staflowlog${resource.random_string.randomstringsta[each.value].result}${lower(each.value)}","-",""),".",""),0,24)
   resource_group_name                   = azurerm_resource_group.RG[each.value].name
   location                              = azurerm_resource_group.RG[each.value].location
   account_tier                          = "Standard"
@@ -92,7 +92,7 @@ resource "azurerm_network_watcher_flow_log" "k8ssub-flowlog" {
 
   network_watcher_name                  = "NetworkWatcher_eastus"
   resource_group_name                   = "NetworkWatcherRG"
-  name                                  = "nsgflowlog-apiserver-${each.value}"
+  name                                  = "nsgflowlog-apiserver-${lower(each.value)}"
 
   network_security_group_id = azurerm_network_security_group.nsg-k8sapi[each.value].id
   storage_account_id        = azurerm_storage_account.STAForFlowLogs[each.value].id
@@ -150,7 +150,7 @@ resource "random_string" "randomstringsta" {
 resource "azurerm_storage_account" "STAForPVCTest" {
   for_each                              = toset(var.TrainingList)
   #substr(replace("${local.RgName}kvpsq${local.PSQLSuffix}", "-", ""), 0, 24)
-  name                                  = substr(replace(replace("stafile${resource.random_string.randomstringsta[each.value].result}${each.value}","-",""),".",""),0,24)
+  name                                  = substr(replace(replace("stafile${resource.random_string.randomstringsta[each.value].result}${lower(each.value)}","-",""),".",""),0,24)
   resource_group_name                   = azurerm_resource_group.RG[each.value].name
   location                              = azurerm_resource_group.RG[each.value].location
   account_tier                          = "Standard"
@@ -273,7 +273,7 @@ resource "azurerm_key_vault_key" "akskmskey" {
 }
 
 # AKS Cluster
-
+/*
 module "AKS" {
   #count = 3
   for_each                              = toset(var.TrainingList)
@@ -292,7 +292,7 @@ module "AKS" {
   AKSIdentityType                       = "UserAssigned"
   UAIIds                                = [module.UAI_AKS[each.value].FullUAIOutput.id]
   PublicSSHKey                          = tls_private_key.akssshkey[each.value].public_key_openssh  
-  AKSClusterAdminsIds                   = ["ff6d6ade-ffb6-4f3c-bbeb-64fab1a397c3"] #[data.azuread_group.aksadmin.object_id]
+  AKSClusterAdminsIds                   = [var.AKSAdminGroupObjectId]#[data.azuread_group.aksadmin.object_id]
   TaintCriticalAddonsEnabled            = false
   LawLogId                              = azurerm_log_analytics_workspace.logaks.id
   #EnableHostEncryption                  = true
@@ -304,8 +304,11 @@ module "AKS" {
   #IsBlobDriverEnabled                   = true
   EnableDiagSettings = true
   EnableHostEncryption     = false
-
+  AKSNodeCount                         = 1
+  EnableAKSAutoScale                   = false
+  MaxAutoScaleCount = null
+  MinAutoScaleCount = null
 
 }
-
+*/
 
